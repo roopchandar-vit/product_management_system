@@ -18,6 +18,7 @@ int main() {
 
         switch (choice) {
             case 1:
+                cout<<"Enter product id, name and price\n";
                 cin >> id >> name >> price;
                 ps.addProduct(id, name, price);
                 break;
