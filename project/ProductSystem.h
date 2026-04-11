@@ -14,8 +14,8 @@ class ProductSystem {
 public:
     void loadFromCSV(string filename);
 
-    void displayFullData();   // FULL dataset
-    void displayProducts();   // unique sorted
+    void displayFullData(); 
+    void displayProducts();
 
     void addProduct(int id, string name, double price);
     void deleteProduct(int id);

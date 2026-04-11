@@ -16,12 +16,10 @@ static string trimLine(const string &s) {
     return s.substr(start, end - start + 1);
 }
 
-// DATA STRUCTURES
-unordered_map<int, Product> productMap;   // unique products
-set<pair<double, int>> priceSet;          // sorted by price
-vector<Product> fullData;                 // FULL dataset
+unordered_map<int, Product> productMap;  
+set<pair<double, int>> priceSet;          
+vector<Product> fullData;                 
 
-// ================= LOAD CSV =================
 void ProductSystem::loadFromCSV(string filename) {
     ifstream file(filename);
     string line;
@@ -31,7 +29,7 @@ void ProductSystem::loadFromCSV(string filename) {
         return;
     }
 
-    getline(file, line); // skip header
+    getline(file, line); 
 
     while (getline(file, line)) {
         if (trimLine(line).empty()) continue;
@@ -47,11 +45,9 @@ void ProductSystem::loadFromCSV(string filename) {
         getline(ss, name, ',');
         getline(ss, temp, ','); price = stod(temp);
 
-        // store FULL dataset
         Product p = {product_id, name, price};
         fullData.push_back(p);
 
-        // store unique products
         if (productMap.find(product_id) == productMap.end()) {
             addProduct(product_id, name, price);
         }
@@ -60,7 +56,6 @@ void ProductSystem::loadFromCSV(string filename) {
     cout << "Dataset loaded successfully!\n";
 }
 
-// ================= DISPLAY FULL DATA =================
 void ProductSystem::displayFullData() {
     if (fullData.empty()) {
         cout << "No data available\n";
@@ -83,7 +78,7 @@ void ProductSystem::displayFullData() {
     cout << "=============================================\n";
 }
 
-// ================= DISPLAY SORTED =================
+// DISPLAY SORTED 
 void ProductSystem::displayProducts() {
     if (priceSet.empty()) {
         cout << "No products available\n";
@@ -108,7 +103,7 @@ void ProductSystem::displayProducts() {
     cout << "=============================================\n";
 }
 
-// ================= ADD =================
+// ADD PRODUCT
 void ProductSystem::addProduct(int id, string name, double price) {
     if (productMap.find(id) != productMap.end()) {
         cout << "Error: A product with ID " << id
@@ -125,7 +120,7 @@ void ProductSystem::addProduct(int id, string name, double price) {
     cout << "Product added successfully!\n";
 }
 
-// ================= DELETE =================
+// DELETE PRODUCT
 void ProductSystem::deleteProduct(int id) {
     if (productMap.find(id) == productMap.end()) {
         cout << "Product not found\n";
@@ -139,7 +134,7 @@ void ProductSystem::deleteProduct(int id) {
     cout << "Product deleted\n";
 }
 
-// ================= UPDATE =================
+// UPDATE PRODUCT
 void ProductSystem::updateProduct(int id, double newPrice) {
     if (productMap.find(id) == productMap.end()) {
         cout << "Product not found\n";
@@ -154,7 +149,7 @@ void ProductSystem::updateProduct(int id, double newPrice) {
     cout << "Product updated\n";
 }
 
-// ================= SEARCH =================
+// SEARCH PRODUCT
 void ProductSystem::searchProduct(int id) {
     if (productMap.find(id) != productMap.end()) {
         Product p = productMap[id];
@@ -174,7 +169,7 @@ void ProductSystem::searchProduct(int id) {
     }
 }
 
-// ================= RANGE QUERY =================
+// RANGE QUERY
 void ProductSystem::rangeQuery(double minPrice, double maxPrice) {
     cout << "\nProducts in range:\n";
 

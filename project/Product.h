@@ -10,9 +10,9 @@
 
 using namespace std;
 
-// ─────────────────────────────────────────────
+
 //  PRODUCT STRUCT
-// ─────────────────────────────────────────────
+
 struct Product {
     int    product_id;
     string product_name;
@@ -32,9 +32,9 @@ struct Product {
     }
 };
 
-// ─────────────────────────────────────────────
+
 //  PRINT TABLE HEADER
-// ─────────────────────────────────────────────
+
 inline void printHeader() {
     cout << "\n" << string(60, '-') << "\n";
     cout << left
@@ -44,9 +44,8 @@ inline void printHeader() {
          << string(60, '-') << "\n";
 }
 
-// ─────────────────────────────────────────────
+
 //  CSV UTILITIES
-// ─────────────────────────────────────────────
 inline string trim(const string &s) {
     size_t start = s.find_first_not_of(" \t\r\n");
     size_t end   = s.find_last_not_of(" \t\r\n");
@@ -63,7 +62,7 @@ inline vector<Product> loadCSV(const string &filename) {
     }
 
     string line;
-    getline(file, line); // skip header row
+    getline(file, line); 
 
     int lineNum = 1;
     while (getline(file, line)) {
@@ -102,4 +101,4 @@ inline void saveCSV(const string &filename, const vector<Product> &products) {
     cout << "[INFO] Saved " << products.size() << " products to " << filename << "\n";
 }
 
-#endif // PRODUCT_H
+#endif 
