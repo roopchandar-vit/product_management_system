@@ -9,6 +9,13 @@
 
 using namespace std;
 
+static string trimLine(const string &s) {
+    size_t start = s.find_first_not_of(" \t\r\n");
+    if (start == string::npos) return "";
+    size_t end = s.find_last_not_of(" \t\r\n");
+    return s.substr(start, end - start + 1);
+}
+
 // DATA STRUCTURES
 unordered_map<int, Product> productMap;   // unique products
 set<pair<double, int>> priceSet;          // sorted by price
@@ -27,19 +34,18 @@ void ProductSystem::loadFromCSV(string filename) {
     getline(file, line); // skip header
 
     while (getline(file, line)) {
+        if (trimLine(line).empty()) continue;
+
         stringstream ss(line);
         string temp;
 
-        int user_id, product_id;
+        int product_id;
         string name;
         double price;
-        int rating;
 
-        getline(ss, temp, ','); user_id = stoi(temp);
         getline(ss, temp, ','); product_id = stoi(temp);
         getline(ss, name, ',');
         getline(ss, temp, ','); price = stod(temp);
-        getline(ss, temp, ','); rating = stoi(temp);
 
         // store FULL dataset
         Product p = {product_id, name, price};
@@ -104,6 +110,12 @@ void ProductSystem::displayProducts() {
 
 // ================= ADD =================
 void ProductSystem::addProduct(int id, string name, double price) {
+    if (productMap.find(id) != productMap.end()) {
+        cout << "Error: A product with ID " << id
+             << " already exists. Duplicates are not allowed.\n";
+        return;
+    }
+
     Product p = {id, name, price};
 
     productMap[id] = p;

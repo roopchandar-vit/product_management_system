@@ -1,21 +1,37 @@
-user_id,product_id,product_name,price,rating
-1,101,Laptop,75000,5
-1,102,Phone,30000,4
-2,101,Laptop,75000,4
-2,103,Tablet,20000,5
-3,102,Phone,30000,3
-3,104,Headphones,2000,4
-4,101,Laptop,75000,5
-4,104,Headphones,2000,5
-5,102,Phone,30000,4
-5,103,Tablet,20000,3
-6,105,Smartwatch,15000,4
-6,102,Phone,30000,5
-7,106,Camera,50000,5
-7,101,Laptop,75000,4
-8,104,Headphones,2000,3
-8,103,Tablet,20000,4
-9,105,Smartwatch,15000,5
-9,102,Phone,30000,4
-10,106,Camera,50000,5
-10,101,Laptop,75000,5
+product_id,product_name,price
+101,Laptop,75000
+102,Phone,30000
+103,Tablet,20000
+104,Headphones,2000
+105,Smartwatch,15000
+106,Camera,50000
+107,Mechanical Keyboard,4500
+108,Gaming Mouse,2800
+109,27inch Monitor,22000
+110,USB-C Hub,3200
+111,Webcam HD,6500
+112,Bluetooth Speaker,9500
+113,USB Microphone,7200
+114,SSD 1TB NVMe,8900
+115,Power Bank 20000mAh,3500
+116,Wireless Earbuds,5500
+117,Desk Lamp LED,1800
+118,Ergonomic Chair,18500
+119,Laptop Stand Aluminum,4200
+120,HDMI Cable 2m,899
+121,Graphics Tablet,12000
+122,WiFi Router AX3000,6500
+123,Portable Hard Drive 2TB,7200
+124,Phone Case Clear,599
+125,Screen Cleaning Kit,450
+126,Noise Cancelling Headset,8900
+127,VR Headset,35000
+128,Game Controller Wireless,4500
+129,RGB Mousepad XL,1500
+130,Network Switch 8 Port,2800
+131,UPS 600VA,4200
+132,Bluetooth Adapter USB,650
+133,Laptop Cooling Pad,2200
+134,USB Flash Drive 64GB,800
+135,Wireless Charger Pad,1900
+136,Anti Glare Screen Film,1200
