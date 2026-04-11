@@ -7,7 +7,7 @@ int main() {
     int choice;
 
     while (true) {
-        cout << "\n1.Add 2.Remove 3.Update 4.Search 5.Display 6.Range 7.Exit\n";
+        cout << "1.Add \n2.Remove \n3.Update \n4.Search \n5.Display \n6.Range 7.Exit\n";
         cin >> choice;
 
         if (choice == 7) break;
@@ -24,16 +24,19 @@ int main() {
                 break;
 
             case 2:
+                cout<<"Enter product id\n ";
                 cin >> id;
                 ps.removeProduct(id);
                 break;
 
             case 3:
+                cout<<"Enter product id and price\n";
                 cin >> id >> price;
                 ps.updatePrice(id, price);
                 break;
 
             case 4:
+                cout<<"Enter product id\n";
                 cin >> id;
                 ps.searchProduct(id);
                 break;
@@ -43,6 +46,7 @@ int main() {
                 break;
 
             case 6:
+                cout<<"Enter Minimum price and Maximum price\n";
                 cin >> minP >> maxP;
                 ps.rangeQuery(minP, maxP);
                 break;
