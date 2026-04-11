@@ -1,57 +1,184 @@
-#include <iostream>
-#include <climits>
 #include "ProductSystem.h"
+#include <iostream>
+#include <unordered_map>
+#include <set>
+#include <vector>
+#include <fstream>
+#include <sstream>
+#include <iomanip>
+
 using namespace std;
 
-void ProductSystem::addProduct(int id, string name, double price) {
-    if (productMap.count(id)) {
-        cout << "Product ID exists!\n";
+// DATA STRUCTURES
+unordered_map<int, Product> productMap;   // unique products
+set<pair<double, int>> priceSet;          // sorted by price
+vector<Product> fullData;                 // FULL dataset
+
+// ================= LOAD CSV =================
+void ProductSystem::loadFromCSV(string filename) {
+    ifstream file(filename);
+    string line;
+
+    if (!file) {
+        cout << "Error opening file!\n";
         return;
     }
-    productMap[id] = {id, name, price};
-    priceSet.insert({price, id});
+
+    getline(file, line); // skip header
+
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string temp;
+
+        int user_id, product_id;
+        string name;
+        double price;
+        int rating;
+
+        getline(ss, temp, ','); user_id = stoi(temp);
+        getline(ss, temp, ','); product_id = stoi(temp);
+        getline(ss, name, ',');
+        getline(ss, temp, ','); price = stod(temp);
+        getline(ss, temp, ','); rating = stoi(temp);
+
+        // store FULL dataset
+        Product p = {product_id, name, price};
+        fullData.push_back(p);
+
+        // store unique products
+        if (productMap.find(product_id) == productMap.end()) {
+            addProduct(product_id, name, price);
+        }
+    }
+
+    cout << "Dataset loaded successfully!\n";
 }
 
-void ProductSystem::removeProduct(int id) {
-    if (!productMap.count(id)) return;
+// ================= DISPLAY FULL DATA =================
+void ProductSystem::displayFullData() {
+    if (fullData.empty()) {
+        cout << "No data available\n";
+        return;
+    }
 
-    auto p = productMap[id];
+    cout << "\n================ FULL DATASET ================\n";
+    cout << left << setw(15) << "Product ID"
+         << setw(20) << "Product Name"
+         << setw(10) << "Price" << endl;
+
+    cout << "---------------------------------------------\n";
+
+    for (auto &p : fullData) {
+        cout << left << setw(15) << p.id
+             << setw(20) << p.name
+             << setw(10) << p.price << endl;
+    }
+
+    cout << "=============================================\n";
+}
+
+// ================= DISPLAY SORTED =================
+void ProductSystem::displayProducts() {
+    if (priceSet.empty()) {
+        cout << "No products available\n";
+        return;
+    }
+
+    cout << "\n============== SORTED PRODUCTS ==============\n";
+    cout << left << setw(15) << "Product ID"
+         << setw(20) << "Product Name"
+         << setw(10) << "Price" << endl;
+
+    cout << "---------------------------------------------\n";
+
+    for (auto &entry : priceSet) {
+        Product p = productMap[entry.second];
+
+        cout << left << setw(15) << p.id
+             << setw(20) << p.name
+             << setw(10) << p.price << endl;
+    }
+
+    cout << "=============================================\n";
+}
+
+// ================= ADD =================
+void ProductSystem::addProduct(int id, string name, double price) {
+    Product p = {id, name, price};
+
+    productMap[id] = p;
+    priceSet.insert({price, id});
+    fullData.push_back(p);
+
+    cout << "Product added successfully!\n";
+}
+
+// ================= DELETE =================
+void ProductSystem::deleteProduct(int id) {
+    if (productMap.find(id) == productMap.end()) {
+        cout << "Product not found\n";
+        return;
+    }
+
+    Product p = productMap[id];
     priceSet.erase({p.price, id});
     productMap.erase(id);
+
+    cout << "Product deleted\n";
 }
 
-void ProductSystem::updatePrice(int id, double newPrice) {
-    if (!productMap.count(id)) return;
+// ================= UPDATE =================
+void ProductSystem::updateProduct(int id, double newPrice) {
+    if (productMap.find(id) == productMap.end()) {
+        cout << "Product not found\n";
+        return;
+    }
 
-    auto &p = productMap[id];
+    Product &p = productMap[id];
     priceSet.erase({p.price, id});
     p.price = newPrice;
     priceSet.insert({newPrice, id});
+
+    cout << "Product updated\n";
 }
 
+// ================= SEARCH =================
 void ProductSystem::searchProduct(int id) {
-    if (!productMap.count(id)) {
-        cout << "Not found\n";
-        return;
-    }
+    if (productMap.find(id) != productMap.end()) {
+        Product p = productMap[id];
 
-    auto p = productMap[id];
-    cout << p.id << " " << p.name << " " << p.price << endl;
+        cout << "\nProduct Found:\n";
+        cout << left << setw(15) << "Product ID"
+             << setw(20) << "Product Name"
+             << setw(10) << "Price" << endl;
+
+        cout << "---------------------------------------------\n";
+
+        cout << left << setw(15) << p.id
+             << setw(20) << p.name
+             << setw(10) << p.price << endl;
+    } else {
+        cout << "Product not found\n";
+    }
 }
 
-void ProductSystem::displayAll() {
-    for (auto &x : priceSet) {
-        auto p = productMap[x.second];
-        cout << p.id << " " << p.name << " " << p.price << endl;
-    }
-}
-
+// ================= RANGE QUERY =================
 void ProductSystem::rangeQuery(double minPrice, double maxPrice) {
-    auto low = priceSet.lower_bound({minPrice, -1});
-    auto high = priceSet.upper_bound({maxPrice, INT_MAX});
+    cout << "\nProducts in range:\n";
 
-    for (auto it = low; it != high; ++it) {
-        auto p = productMap[it->second];
-        cout << p.id << " " << p.name << " " << p.price << endl;
+    cout << left << setw(15) << "Product ID"
+         << setw(20) << "Product Name"
+         << setw(10) << "Price" << endl;
+
+    cout << "---------------------------------------------\n";
+
+    for (auto &entry : priceSet) {
+        if (entry.first >= minPrice && entry.first <= maxPrice) {
+            Product p = productMap[entry.second];
+
+            cout << left << setw(15) << p.id
+                 << setw(20) << p.name
+                 << setw(10) << p.price << endl;
+        }
     }
 }
